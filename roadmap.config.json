@@ -1,0 +1,31 @@
+{
+  "client_name": "Market America",
+  "client_key": "ma",
+  "html_file": "index.html",
+  "live_url": "",
+  "review_branch": "draft",
+  "board_type": "engagement-length",
+  "repo": "https://github.com/justinanatta/MA-Roadmap.git",
+  "transcripts_dir": "~/Documents/PMO/MarketAmerica/transcripts/",
+  "engagement": {
+    "kickoff": "2026-01-09",
+    "grid_start_monday": "2026-01-12",
+    "go_live": "2026-09-28",
+    "hypercare_end": "2026-10-16",
+    "columns": 40
+  },
+  "jira": {
+    "site": "anatta-io.atlassian.net",
+    "project": "MA",
+    "board": 169,
+    "visible_marker": "label:roadmap",
+    "lanes": {
+      "cart": "MA-108",
+      "plp": "MA-46",
+      "promotions": "MA-113",
+      "implementations": "MA-105",
+      "compliance": "MA-111",
+      "experiments": "MA-4"
+    }
+  }
+}

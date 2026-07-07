@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market America — Global Shopify Launch Roadmap</title>
+<meta name="description" content="Market America global Shopify launch roadmap — full engagement, ownership-tagged.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --ground: #F4F6F8;
+    --ground-elev: #E9ECEF;
+    --ink: #1A1F1A;
+    --ink-mid: #4D5249;
+    --ink-mute: #8B8D7E;
+    --rule: #C4C0B0;
+    --rule-strong: #1A1F1A;
+    --signal: #8B3D14;        /* Deep vermillion */
+    --counter: #1F5E45;       /* Deep bluish green */
+    --today: #64748B;         /* Soft slate, Asana-style */
+
+    /* Dark muted Okabe-Ito: same hue families for colorblind distinguishability, darker luminance for white-text contrast (WCAG AA+) */
+    --cart: #2C5266;          /* Dark teal-blue */
+    --plp: #7A5520;           /* Dark amber */
+    --experiments: #1F5E45;   /* Dark bluish green */
+    --implementations: #614258; /* Dark plum */
+    --compliance: #3D5F73;    /* Dark slate blue */
+    --promotions: #1F5D5D;    /* Dark teal */
+
+    --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { font-family: var(--font); }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    padding: 32px 48px 56px;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .page { max-width: 1720px; margin: 0 auto; }
+
+  .topbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+  .topbar-meta {
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+  .topbar-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-left: auto;
+  }
+  .toggle-btn {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-mid);
+    padding: 4px 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 2px;
+    font-family: var(--font);
+  }
+  .toggle-btn:hover {
+    background: var(--ground-elev);
+    color: var(--ink);
+  }
+
+  .title-block { margin-bottom: 40px; }
+  h1.title {
+    font-size: clamp(26px, 3.4vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.024em;
+    font-weight: 500;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  h1.title em {
+    color: var(--signal);
+    font-style: normal;
+    font-weight: 500;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--ink-mid);
+    max-width: 76ch;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .gantt-wrap {
+    overflow-x: auto;
+    border-top: 1.5px solid var(--rule-strong);
+    border-bottom: 1.5px solid var(--rule-strong);
+    background: var(--ground);
+    margin-top: 12px;
+  }
+  .gantt {
+    --label-col: 280px;
+    min-width: 3600px;
+    width: 100%;
+    position: relative;
+    padding-top: 34px; /* headroom for the today flag — must stay inside .gantt-wrap's overflow clip */
+  }
+
+  .col-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--label-col);
+    width: 9px;
+    margin-left: -4px;
+    cursor: col-resize;
+    z-index: 20;
+    background: transparent;
+    touch-action: none;
+  }
+  .col-resizer::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 36px;
+    background: var(--rule);
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .col-resizer:hover::after,
+  .col-resizer.dragging::after {
+    opacity: 1;
+    background: var(--ink-mid);
+  }
+
+  /* TODAY LINE */
+  .today-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--today);
+    z-index: 10;
+    pointer-events: none;
+    display: none;
+    opacity: 1;
+  }
+  .today-flag {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--today);
+    color: white;
+    padding: 4px 9px 3px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-weight: 600;
+    border-radius: 2px;
+  }
+  .today-flag::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--today);
+  }
+  .today-flag-date {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  details.group { display: block; }
+  summary.row {
+    list-style: none;
+    cursor: pointer;
+  }
+  summary.row::-webkit-details-marker { display: none; }
+  summary.row::marker { display: none; }
+  summary.row:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -2px;
+  }
+  details > summary .row-label::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--ink-mid);
+    margin-right: 10px;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+    transform-origin: 50% 30%;
+  }
+  details:not([open]) > summary .row-label::before {
+    transform: rotate(-90deg);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: var(--label-col, 280px) 1fr;
+  }
+  .row-label {
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--ink);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--ground);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    line-height: 1.3;
+  }
+  .row-label .label-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+  }
+  .row-label .label-top > a,
+  .row-label .label-top > span:not(.id) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .row-label .row-meta {
+    font-size: 10.5px;
+    color: var(--ink-mute);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+  }
+  .row-label.indented { padding-left: 32px; }
+  .row-label.sub-indented { padding-left: 48px; font-size: 12px; color: var(--ink-mid); }
+  .row-label.sub-indented .label-top::before {
+    content: '↳';
+    color: var(--ink-mute);
+    margin-right: 4px;
+  }
+
+  /* Link styling for clickable row labels */
+  .row-label a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .row-label a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--ink-mute);
+    text-underline-offset: 3px;
+  }
+  .row-label a:focus-visible {
+    outline: 1.5px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  .row-label .id,
+  .row-label a.id {
+    font-size: 11px;
+    color: var(--ink-mute);
+    white-space: nowrap;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-left: auto;
+  }
+  .row-label a.id:hover {
+    color: var(--ink);
+  }
+
+  .row-track {
+    display: grid;
+    grid-template-columns: repeat(40, 1fr);
+    border-bottom: 1px solid var(--rule);
+    background: var(--ground);
+    position: relative;
+    min-height: 48px;
+  }
+  .cell {
+    border-right: 1px solid var(--rule);
+    grid-row: 1;
+  }
+  .cell:last-child { border-right: none; }
+  .cell.prior { background: rgba(74, 80, 75, 0.11); }
+
+  /* Reset to single-row flex for special header rows */
+  .sprint-row .row-label,
+  .week-row .row-label,
+  .milestone-row .row-label,
+  .group-row .row-label {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* SPRINT BAND ROW */
+  .sprint-row .row-label {
+    background: var(--ground-elev);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mid);
+    font-weight: 600;
+  }
+  .sprint-row .row-track {
+    background: var(--ground-elev);
+    min-height: 42px;
+  }
+  .sprint-band {
+    grid-row: 1;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 4px;
+    text-align: center;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    color: var(--ink-mid);
+    border-right: 1px solid var(--rule);
+    font-weight: 600;
+  }
+  .sprint-dates {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    opacity: 0.85;
+    white-space: nowrap;
+  }
+  .sprint-band.prior {
+    background: rgba(74, 80, 75, 0.16);
+    color: var(--ink-mid);
+  }
+  .sprint-band.tint { background: rgba(74, 80, 75, 0.08); }
+  .sprint-band.tint-alt { background: rgba(74, 80, 75, 0.14); }
+  .sprint-band.renewal-band {
+    background: rgba(122, 41, 36, 0.12);
+    color: var(--signal);
+    font-weight: 700;
+    border-right: none;
+  }
+
+  /* WEEK LABEL ROW */
+  .week-row .row-label {
+    background: var(--ground);
+    border-bottom: 1.5px solid var(--ink);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-mid);
+    font-weight: 600;
+  }
+  .week-row .row-track {
+    background: var(--ground);
+    border-bottom: 1.5px solid var(--ink);
+    min-height: 32px;
+  }
+  .week-label {
+    grid-row: 1;
+    font-size: 10px;
+    color: var(--ink-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--rule);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+  .week-label.prior {
+    color: var(--ink-mid);
+    background: rgba(74, 80, 75, 0.11);
+  }
+  .week-label:last-child { border-right: none; }
+
+  /* MILESTONE ROW */
+  .milestone-row .row-label {
+    background: var(--ground);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mid);
+    font-weight: 600;
+  }
+  .milestone-row .row-track {
+    min-height: 52px;
+    align-items: center;
+  }
+  .milestone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 4px;
+  }
+  .diamond {
+    width: 10px;
+    height: 10px;
+    background: var(--ink);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+  .diamond.release { background: var(--counter); }
+  .diamond.release.projected {
+    background: var(--ground);
+    border: 1.5px solid var(--counter);
+  }
+  .diamond.holiday { background: var(--ink-mute); }
+  .diamond.renewal {
+    background: var(--signal);
+    width: 14px;
+    height: 14px;
+  }
+  .milestone-label {
+    font-size: 9px;
+    color: var(--ink-mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 500;
+  }
+  .milestone.projected .milestone-label {
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+  .milestone.renewal .milestone-label {
+    color: var(--signal);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  /* GROUP HEADER ROW */
+  .group-row .row-label {
+    background: var(--ground-elev);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    font-weight: 700;
+    padding: 14px 16px 12px;
+  }
+  .group-row .row-track {
+    background: var(--ground-elev);
+    min-height: 44px;
+  }
+  .group-row .row-track,
+  .group-row .row-label {
+    border-bottom: 1px solid var(--rule);
+  }
+  .group-id,
+  a.group-id {
+    font-size: 10px;
+    color: var(--ink-mute);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    margin-left: 6px;
+  }
+  a.group-id:hover { color: var(--ink); }
+  .group-id.muted { color: var(--ink-mute); font-style: italic; }
+
+  /* BARS */
+  .bar {
+    grid-row: 1;
+    align-self: center;
+    margin: 6px 4px;
+    height: 24px;
+    padding: 0 10px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: white;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-radius: 2px;
+    min-width: 0;
+    font-weight: 500;
+    position: relative;
+  }
+  .bar-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1;
+  }
+  .bar.cart { background-color: var(--cart); }
+  .bar.plp { background-color: var(--plp); }
+  .bar.experiments { background-color: var(--experiments); }
+  .bar.implementations { background-color: var(--implementations); }
+  .bar.compliance { background-color: var(--compliance); }
+  .bar.promotions { background-color: var(--promotions); }
+  .bar.proposed {
+    background-color: var(--ground);
+    color: var(--signal);
+    border: 1.5px dashed var(--signal);
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 6px,
+      rgba(122, 41, 36, 0.08) 6px,
+      rgba(122, 41, 36, 0.08) 8px
+    );
+    font-weight: 600;
+  }
+  .bar.deferred {
+    background-color: transparent;
+    color: var(--ink-mute);
+    border: 1px dashed var(--ink-mute);
+    font-weight: 500;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--ink-mute);
+    opacity: 0.75;
+  }
+  .bar.done {
+    background-color: var(--ink-mute);
+    opacity: 0.7;
+  }
+  .bar.epic {
+    min-height: 30px;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .bar.crosses {
+    background-image: linear-gradient(
+      to right,
+      rgba(0,0,0,0.32) 0%,
+      rgba(0,0,0,0.32) var(--past, 50%),
+      transparent var(--past, 50%),
+      transparent 100%
+    );
+  }
+  .bar.proposed.crosses {
+    background-image:
+      linear-gradient(
+        to right,
+        rgba(122, 41, 36, 0.18) 0%,
+        rgba(122, 41, 36, 0.18) var(--past, 50%),
+        transparent var(--past, 50%),
+        transparent 100%
+      ),
+      repeating-linear-gradient(
+        45deg,
+        transparent 0,
+        transparent 6px,
+        rgba(122, 41, 36, 0.08) 6px,
+        rgba(122, 41, 36, 0.08) 8px
+      );
+  }
+  .bar-status {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-left: auto;
+    padding-left: 6px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* TASK-TYPE PILL */
+  .bar-type {
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    padding: 2.5px 5px;
+    background: rgba(255, 255, 255, 0.24);
+    color: white;
+    border-radius: 2px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .bar.proposed .bar-type {
+    background: rgba(122, 41, 36, 0.16);
+    color: var(--signal);
+  }
+  .bar.deferred .bar-type {
+    background: transparent;
+    color: var(--ink-mute);
+    border: 1px solid var(--ink-mute);
+    padding: 1.5px 4px;
+  }
+  .bar.done .bar-type {
+    background: rgba(255, 255, 255, 0.32);
+    color: white;
+  }
+  .bar.epic .bar-type {
+    background: rgba(255, 255, 255, 0.3);
+    font-size: 9px;
+  }
+
+  /* LEGEND */
+  .legend-note {
+    margin-top: 28px;
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: var(--ink-mute);
+    line-height: 1.5;
+    max-width: 760px;
+  }
+  .legend {
+    margin-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 28px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-mid);
+    font-weight: 500;
+  }
+  .legend-group {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-right: 18px;
+  }
+  .legend-group:not(:last-child) {
+    border-right: 1px solid var(--rule);
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .swatch {
+    width: 18px;
+    height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .swatch.cart { background-color: var(--cart); }
+  .swatch.plp { background-color: var(--plp); }
+  .swatch.experiments { background-color: var(--experiments); }
+  .swatch.implementations { background-color: var(--implementations); }
+  .swatch.compliance { background-color: var(--compliance); }
+  .swatch.promotions { background-color: var(--promotions); }
+  .swatch.proposed {
+    background-color: var(--ground);
+    border: 1.5px dashed var(--signal);
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 4px,
+      rgba(122, 41, 36, 0.1) 4px,
+      rgba(122, 41, 36, 0.1) 6px
+    );
+  }
+  .swatch.deferred {
+    background-color: transparent;
+    border: 1px dashed var(--ink-mute);
+  }
+  .swatch.done { background: var(--ink-mute); opacity: 0.7; }
+  .swatch.crosses {
+    background-image: linear-gradient(
+      to right,
+      rgba(0,0,0,0.45) 0 50%,
+      transparent 50% 100%
+    ), linear-gradient(var(--ink-mid), var(--ink-mid));
+  }
+  .legend-diamond {
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+  .legend-diamond.release { background: var(--counter); }
+  .legend-diamond.projected {
+    background: var(--ground);
+    border: 1.5px solid var(--counter);
+  }
+  .legend-diamond.holiday { background: var(--ink-mute); }
+  .legend-diamond.renewal { background: var(--signal); width: 12px; height: 12px; }
+  .legend-today {
+    width: 2px;
+    height: 14px;
+    background: var(--today);
+    opacity: 1;
+    flex-shrink: 0;
+  }
+  .legend-pill {
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    padding: 2.5px 5px;
+    background: var(--ink-mid);
+    color: white;
+    border-radius: 2px;
+    text-transform: uppercase;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 16px 12px 40px; font-size: 13px; }
+    .topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .topbar-actions { margin-left: 0; }
+    .topbar-meta { order: 3; }
+    .title-block { margin-bottom: 24px; }
+    h1.title { font-size: 22px; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; line-height: 1.4; }
+    .gantt-wrap { margin-top: 24px; }
+    .gantt { --label-col: 160px; min-width: 2800px; }
+    .row-label { padding: 6px 8px; font-size: 11px; }
+    .row-label.indented { padding-left: 18px; }
+    .row-label.sub-indented { padding-left: 28px; font-size: 11px; }
+    .row-label .row-meta { display: none; }
+    .row-label .label-top { gap: 6px; }
+    .row-label .id, .row-label a.id { font-size: 9px; padding: 1px 4px; }
+    .bar { font-size: 10px; min-height: 22px; }
+    .bar-type { font-size: 8px; padding: 1px 4px; }
+    .bar-label { font-size: 10px; }
+    .sprint-band { font-size: 9px; padding: 4px 6px; }
+    .col-resizer { width: 14px; margin-left: -7px; }
+    .col-resizer::after { opacity: 1; background: var(--rule); height: 24px; }
+    .legend { flex-direction: column; gap: 8px; padding: 16px 12px; }
+    .legend-group { border-right: none !important; padding-right: 0; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+    .legend-group:last-child { border-bottom: none; padding-bottom: 0; }
+    .today-flag { font-size: 9px; padding: 3px 6px 2px; top: 2px; }
+    footer { font-size: 10px; margin-top: 32px; padding-top: 16px; }
+  }
+
+
+  /* Row labels stay pinned while the timeline scrolls horizontally */
+  .row-label {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+  }
+
+  /* Client-action bars: work blocked on a client decision/approval */
+  .bar.client-action { box-shadow: inset 0 0 0 2px var(--signal); }
+  .bar.client-action .bar-type { background: var(--signal); color: #fff; }
+  .swatch.client-action-swatch { background: transparent; box-shadow: inset 0 0 0 2px var(--signal); }
+
+  /* Pin filler cells to their columns: auto-placed cells skip explicitly
+     placed bars, displacing the grid lines in every row that has a bar.
+     Explicit-vs-explicit placement may overlap, so bars sit on top. */
+  .row-track .cell:nth-child(1) { grid-column: 1; }
+  .row-track .cell:nth-child(2) { grid-column: 2; }
+  .row-track .cell:nth-child(3) { grid-column: 3; }
+  .row-track .cell:nth-child(4) { grid-column: 4; }
+  .row-track .cell:nth-child(5) { grid-column: 5; }
+  .row-track .cell:nth-child(6) { grid-column: 6; }
+  .row-track .cell:nth-child(7) { grid-column: 7; }
+  .row-track .cell:nth-child(8) { grid-column: 8; }
+  .row-track .cell:nth-child(9) { grid-column: 9; }
+  .row-track .cell:nth-child(10) { grid-column: 10; }
+  .row-track .cell:nth-child(11) { grid-column: 11; }
+  .row-track .cell:nth-child(12) { grid-column: 12; }
+  .row-track .cell:nth-child(13) { grid-column: 13; }
+  .row-track .cell:nth-child(14) { grid-column: 14; }
+  .row-track .cell:nth-child(15) { grid-column: 15; }
+  .row-track .cell:nth-child(16) { grid-column: 16; }
+  .row-track .cell:nth-child(17) { grid-column: 17; }
+  .row-track .cell:nth-child(18) { grid-column: 18; }
+  .row-track .cell:nth-child(19) { grid-column: 19; }
+  .row-track .cell:nth-child(20) { grid-column: 20; }
+  .row-track .cell:nth-child(21) { grid-column: 21; }
+  .row-track .cell:nth-child(22) { grid-column: 22; }
+  .row-track .cell:nth-child(23) { grid-column: 23; }
+  .row-track .cell:nth-child(24) { grid-column: 24; }
+  .row-track .cell:nth-child(25) { grid-column: 25; }
+  .row-track .cell:nth-child(26) { grid-column: 26; }
+  .row-track .cell:nth-child(27) { grid-column: 27; }
+  .row-track .cell:nth-child(28) { grid-column: 28; }
+  .row-track .cell:nth-child(29) { grid-column: 29; }
+  .row-track .cell:nth-child(30) { grid-column: 30; }
+  .row-track .cell:nth-child(31) { grid-column: 31; }
+  .row-track .cell:nth-child(32) { grid-column: 32; }
+  .row-track .cell:nth-child(33) { grid-column: 33; }
+  .row-track .cell:nth-child(34) { grid-column: 34; }
+  .row-track .cell:nth-child(35) { grid-column: 35; }
+  .row-track .cell:nth-child(36) { grid-column: 36; }
+  .row-track .cell:nth-child(37) { grid-column: 37; }
+  .row-track .cell:nth-child(38) { grid-column: 38; }
+  .row-track .cell:nth-child(39) { grid-column: 39; }
+  .row-track .cell:nth-child(40) { grid-column: 40; }
+
+  /* ===== OWNERSHIP ENCODING (MA extension, v0.2) ===== */
+  .bar-owner { font-size: 9.5px; letter-spacing: 0.07em; text-transform: uppercase;
+    font-weight: 700; padding-left: 8px; opacity: 0.95; white-space: nowrap; flex-shrink: 0; }
+  /* Client-owned (Market America): diagonal hatch over the lane color — high contrast for projector distance */
+  .bar.own-client { background-image: repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.38) 0, rgba(255,255,255,0.38) 5px, transparent 5px, transparent 11px); }
+  /* Joint: left --own% solid (Anatta), remainder hatched (client), divider at the boundary */
+  .bar.own-joint { background-repeat: no-repeat; background-position: right center;
+    background-size: calc(100% - var(--own, 50%)) 100%;
+    background-image: repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.38) 0, rgba(255,255,255,0.38) 5px, transparent 5px, transparent 11px); }
+  .bar.own-joint::before { content: ''; position: absolute; top: 0; bottom: 0;
+    left: var(--own, 50%); width: 2px; background: rgba(255,255,255,0.85); z-index: 1; }
+  /* Blocked awaiting a client/partner decision or dependency: signal-red inner outline + filled pill.
+     Reserved for genuine gates only — ownership alone is carried by the hatch. */
+  .bar.client-action { box-shadow: inset 0 0 0 1.5px var(--signal); }
+  .bar.client-action .bar-type { background: var(--signal); color: #fff; }
+  /* ownership legend swatches */
+  .swatch.own-anatta { background: var(--cart); }
+  .swatch.own-client { background: var(--cart); background-image: repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.55) 0, rgba(255,255,255,0.55) 3px, transparent 3px, transparent 6px); }
+  .swatch.own-joint { background: var(--cart); background-repeat:no-repeat; background-position:right;
+      background-size:50% 100%; background-image: repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.55) 0, rgba(255,255,255,0.55) 3px, transparent 3px, transparent 6px); }
+  .swatch.client-action { background: var(--ground); box-shadow: inset 0 0 0 1.5px var(--signal); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <div class="eyebrow">Market America × Anatta · SHOP.COM Replatform · 2026</div>
+    <div class="topbar-actions">
+      <button class="toggle-btn" id="expandAll" type="button">Expand all</button>
+      <button class="toggle-btn" id="collapseAll" type="button">Collapse all</button>
+    </div>
+    <div class="topbar-meta">DRAFT v0.2 · Jan – Oct 2026 · Go-live 9/28</div>
+  </div>
+  <div class="title-block">
+    <h1 class="title">Market America — <em>Global Shopify Launch</em> Roadmap</h1>
+    <p class="subtitle">The full engagement across 8 countries and 24 stores: what's shipped, what's in build at the today line, and the path to the September global go-live — with each item marked by who owns it, Anatta or Market America.</p>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt">
+      <div class="today-line" id="todayLine">
+        <div class="today-flag"><span>TODAY</span><span class="today-flag-date" id="todayDate">Jul 7</span></div>
+      </div>
+      <div class="col-resizer" id="colResizer" title="Drag to resize label column"></div>
+      <div class="row sprint-row"><div class="row-label">Sprint</div><div class="row-track"><div class="sprint-band prior" style="grid-column: 1 / 6;">Kickoff &amp; Design<span class="sprint-dates">Jan – Feb</span></div><div class="sprint-band prior" style="grid-column: 6 / 8;">Sprint 1<span class="sprint-dates">Feb 16 – 27</span></div><div class="sprint-band prior" style="grid-column: 8 / 10;">Sprint 2<span class="sprint-dates">Mar 2 – 13</span></div><div class="sprint-band prior" style="grid-column: 10 / 12;">Sprint 3<span class="sprint-dates">Mar 16 – 27</span></div><div class="sprint-band prior" style="grid-column: 12 / 14;">Sprint 4<span class="sprint-dates">Mar 30 – Apr 10</span></div><div class="sprint-band prior" style="grid-column: 14 / 16;">Sprint 5<span class="sprint-dates">Apr 13 – 24</span></div><div class="sprint-band prior" style="grid-column: 16 / 18;">Sprint 6<span class="sprint-dates">Apr 27 – May 8</span></div><div class="sprint-band prior" style="grid-column: 18 / 20;">Sprint 7<span class="sprint-dates">May 11 – 22</span></div><div class="sprint-band prior" style="grid-column: 20 / 22;">Sprint 8<span class="sprint-dates">May 25 – Jun 5</span></div><div class="sprint-band prior" style="grid-column: 22 / 24;">Sprint 9<span class="sprint-dates">Jun 8 – 19</span></div><div class="sprint-band prior" style="grid-column: 24 / 26;">Sprint 10<span class="sprint-dates">Jun 22 – Jul 3</span></div><div class="sprint-band tint-alt" style="grid-column: 26 / 28;">Sprint 11<span class="sprint-dates">Jul 6 – 17</span></div><div class="sprint-band tint" style="grid-column: 28 / 30;">Sprint 12<span class="sprint-dates">Jul 20 – 31</span></div><div class="sprint-band tint-alt" style="grid-column: 30 / 32;">Sprint 13<span class="sprint-dates">Aug 3 – 14</span></div><div class="sprint-band tint" style="grid-column: 32 / 34;">Sprint 14<span class="sprint-dates">Aug 17 – 28</span></div><div class="sprint-band tint-alt" style="grid-column: 34 / 36;">Sprint 15<span class="sprint-dates">Aug 31 – Sep 11</span></div><div class="sprint-band tint" style="grid-column: 36 / 38;">Sprint 16<span class="sprint-dates">Sep 14 – 25</span></div><div class="sprint-band renewal-band" style="grid-column: 38 / 41;">Launch &amp; Hypercare<span class="sprint-dates">Sep 28 – Oct</span></div></div></div>
+      <div class="row week-row"><div class="row-label">Week of</div><div class="row-track"><div class="week-label prior">Jan 12</div><div class="week-label prior">Jan 19</div><div class="week-label prior">Jan 26</div><div class="week-label prior">Feb 2</div><div class="week-label prior">Feb 9</div><div class="week-label prior">Feb 16</div><div class="week-label prior">Feb 23</div><div class="week-label prior">Mar 2</div><div class="week-label prior">Mar 9</div><div class="week-label prior">Mar 16</div><div class="week-label prior">Mar 23</div><div class="week-label prior">Mar 30</div><div class="week-label prior">Apr 6</div><div class="week-label prior">Apr 13</div><div class="week-label prior">Apr 20</div><div class="week-label prior">Apr 27</div><div class="week-label prior">May 4</div><div class="week-label prior">May 11</div><div class="week-label prior">May 18</div><div class="week-label prior">May 25</div><div class="week-label prior">Jun 1</div><div class="week-label prior">Jun 8</div><div class="week-label prior">Jun 15</div><div class="week-label prior">Jun 22</div><div class="week-label prior">Jun 29</div><div class="week-label">Jul 6</div><div class="week-label">Jul 13</div><div class="week-label">Jul 20</div><div class="week-label">Jul 27</div><div class="week-label">Aug 3</div><div class="week-label">Aug 10</div><div class="week-label">Aug 17</div><div class="week-label">Aug 24</div><div class="week-label">Aug 31</div><div class="week-label">Sep 7</div><div class="week-label">Sep 14</div><div class="week-label">Sep 21</div><div class="week-label">Sep 28</div><div class="week-label">Oct 5</div><div class="week-label">Oct 12</div></div></div>
+      <div class="row milestone-row"><div class="row-label">Milestones</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="milestone" style="grid-column: 2 / 3;"><div class="diamond release"></div><div class="milestone-label">Instances &amp; 24 stores live · 1/23</div></div><div class="milestone" style="grid-column: 15 / 16;"><div class="diamond release"></div><div class="milestone-label">Design approved · development kickoff · 4/24</div></div><div class="milestone" style="grid-column: 20 / 21;"><div class="diamond release"></div><div class="milestone-label">Client demo · 5/26</div></div><div class="milestone" style="grid-column: 24 / 25;"><div class="diamond release"></div><div class="milestone-label">Storefront handoff · 6/25</div></div><div class="milestone projected" style="grid-column: 26 / 27;"><div class="diamond release projected"></div><div class="milestone-label">Executive preview · ~7/8</div></div><div class="milestone projected" style="grid-column: 29 / 30;"><div class="diamond release projected"></div><div class="milestone-label">Development complete · ~7/31</div></div><div class="milestone projected" style="grid-column: 30 / 31;"><div class="diamond release projected"></div><div class="milestone-label">Code freeze · ~8/5</div></div><div class="milestone projected" style="grid-column: 32 / 33;"><div class="diamond release projected"></div><div class="milestone-label">UAT begins · ~8/17</div></div><div class="milestone projected" style="grid-column: 35 / 36;"><div class="diamond release projected"></div><div class="milestone-label">UAT sign-off · ~9/11</div></div><div class="milestone renewal" style="grid-column: 38 / 39;"><div class="diamond renewal"></div><div class="milestone-label">GLOBAL GO-LIVE · 9/28</div></div><div class="milestone projected" style="grid-column: 40 / 41;"><div class="diamond release projected"></div><div class="milestone-label">Hypercare handoff · ~10/16</div></div></div></div>
+<details class="group" open><summary class="row group-row"><div class="row-label">Storefront &amp; Theme</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart epic" style="grid-column: 1 / 32;"><span class="bar-type">IMPL</span>Storefront build <span class="bar-status">January → mid-August</span></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><span>Discovery, solution architecture &amp; design system</span><span class="id">NEW</span></span><span class="row-meta">Foundation phase complete · design approved April 24</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart done own-joint" style="grid-column: 1 / 16; --own: 50%;" title="Discovery, architecture and design system: definition with the client, implementation by Anatta"><span class="bar-type">SPIKE</span><span class="bar-label">Shipped</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-45" target="_blank" rel="noopener">Component library — 77 reusable components</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-45" target="_blank" rel="noopener">MA-45</a></span><span class="row-meta">Shipped April · powers every page build</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart done" style="grid-column: 6 / 18;" title="Reusable storefront component library, 77 components"><span class="bar-type">IMPL</span><span class="bar-label">Shipped</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-345" target="_blank" rel="noopener">Global components — Header, Footer, Navigation</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-345" target="_blank" rel="noopener">MA-345</a></span><span class="row-meta">10 of 13 shipped · handed off June 25 · finishing touches</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 6 / 30; --past: 84%;" title="Header, footer and navigation handed off for client review; remaining items in flight"><span class="bar-type">IMPL</span><span class="bar-label">In client review</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-911" target="_blank" rel="noopener">Homepage — US &amp; Taiwan</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-911" target="_blank" rel="noopener">MA-911</a></span><span class="row-meta">24 of 25 sections built · sign-off requested June 25</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 17 / 28; --past: 83%;" title="US and Taiwan homepage build; client sign-off requested"><span class="bar-type">IMPL</span><span class="bar-label">Client review</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-47" target="_blank" rel="noopener">Product Detail Pages (PDP)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-47" target="_blank" rel="noopener">MA-47</a></span><span class="row-meta">Core components shipped · remaining items through mid-August</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 14 / 32; --past: 67%;" title="PDP core and content components shipped; assembly and remaining items in flight"><span class="bar-type">IMPL</span><span class="bar-label">→ mid-August</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-46" target="_blank" rel="noopener">Product Listing &amp; Collections (PLP)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-46" target="_blank" rel="noopener">MA-46</a></span><span class="row-meta">Filters, cards &amp; banners shipped · finishing</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 17 / 29; --past: 76%;" title="Product listing pages, filters, sort and banners"><span class="bar-type">IMPL</span><span class="bar-label">→ late July</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-949" target="_blank" rel="noopener">Product Content Pages — brand templates</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-949" target="_blank" rel="noopener">MA-949</a></span><span class="row-meta">10 of 14 brand templates shipped</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 20 / 30; --past: 61%;" title="Per-brand product content page templates"><span class="bar-type">IMPL</span><span class="bar-label">→ late July</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-50" target="_blank" rel="noopener">Cart &amp; Mini-Cart</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-50" target="_blank" rel="noopener">MA-50</a></span><span class="row-meta">Regional cart features in build through mid-August</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 24 / 32; --past: 27%;" title="Cart drawer, mini-cart and regional cart capabilities"><span class="bar-type">IMPL</span><span class="bar-label">→ mid-August</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-54" target="_blank" rel="noopener">Account Portal</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-54" target="_blank" rel="noopener">MA-54</a></span><span class="row-meta">Order history, subscriptions portal, profile in build</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart crosses" style="grid-column: 24 / 32; --past: 27%;" title="Customer account area: order history, subscriptions, profile"><span class="bar-type">IMPL</span><span class="bar-label">→ mid-August</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-1066" target="_blank" rel="noopener">Content &amp; brand pages (~30)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-1066" target="_blank" rel="noopener">MA-1066</a></span><span class="row-meta">Pending design handoff · target July 31, may extend early August</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart client-action own-joint" style="grid-column: 27 / 32; --own: 50%;" title="Standard content and brand pages; build begins on design handoff"><span class="bar-type">IMPL</span><span class="bar-label">Awaiting designs</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-1217" target="_blank" rel="noopener">Account Portal — design approvals</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-1217" target="_blank" rel="noopener">MA-1217</a></span><span class="row-meta">Certain account screens pending design approval</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar cart client-action own-client crosses" style="grid-column: 26 / 29; --past: 5%;" title="Pending design approval"><span class="bar-type">CONV</span><span class="bar-label">Awaiting approval</span><span class="bar-owner">MARKET AMERICA</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">Search &amp; Catalog</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar plp epic" style="grid-column: 8 / 32;"><span class="bar-type">IMPL</span>Search &amp; product catalog <span class="bar-status">February → early August</span></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-519" target="_blank" rel="noopener">Product architecture &amp; migration (Akeneo → Shopify)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-519" target="_blank" rel="noopener">MA-519</a></span><span class="row-meta">Initial catalog migrated · re-validation mid-July</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar plp done own-client" style="grid-column: 8 / 21;" title="Product architecture and initial catalog migration from the client PIM"><span class="bar-type">IMPL</span><span class="bar-label">Shipped</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-106" target="_blank" rel="noopener">Product search index (Elasticsearch sync)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-106" target="_blank" rel="noopener">MA-106</a></span><span class="row-meta">Product sync live</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar plp done own-client" style="grid-column: 10 / 23;" title="Search index sync; source system is client-owned"><span class="bar-type">IMPL</span><span class="bar-label">Shipped</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Search interface &amp; autocomplete</span><span class="id">NEW</span></span><span class="row-meta">Results, suggestions &amp; feedback in build</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar plp crosses" style="grid-column: 22 / 30; --past: 52%;" title="Search results, autocomplete suggestions, zero-results handling"><span class="bar-type">IMPL</span><span class="bar-label">→ late July</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Shop.com global products listing</span><span class="id">NEW</span></span><span class="row-meta">In quality assurance this week</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar plp crosses" style="grid-column: 26 / 29; --past: 5%;" title="Global product listing pages for the Shop.com catalog"><span class="bar-type">IMPL</span><span class="bar-label">In QA</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Search API &amp; product data (client systems)</span><span class="id">NEW</span></span><span class="row-meta">Endpoints &amp; data provided by client systems</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar plp client-action own-client crosses" style="grid-column: 22 / 32; --past: 41%;" title="Autocomplete integration pending API availability"><span class="bar-type">SPIKE</span><span class="bar-label">API dependency</span><span class="bar-owner">MARKET AMERICA</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">Subscriptions &amp; Payments</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions epic" style="grid-column: 12 / 36;"><span class="bar-type">IMPL</span>Checkout, subscriptions &amp; payments <span class="bar-status">February → September</span></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-113" target="_blank" rel="noopener">Payment gateways — US, Canada, Singapore, Australia, Hong Kong</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-113" target="_blank" rel="noopener">MA-113</a></span><span class="row-meta">Configured and validated · June</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions done own-client" style="grid-column: 12 / 24;" title="Regional payment gateways configured by Market America and the platform"><span class="bar-type">IMPL</span><span class="bar-label">Shipped</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Fraud configuration — 4 regions</span><span class="id">NEW</span></span><span class="row-meta">Fraud rules configured · May</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions done own-client" style="grid-column: 12 / 22;" title="Fraud protection configured across regions"><span class="bar-type">IMPL</span><span class="bar-label">Shipped</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Cybersource + Seal proof of concept</span><span class="id">NEW</span></span><span class="row-meta">Recurring orders validated in sandbox · June 10</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions done" style="grid-column: 20 / 24;" title="Payment and subscription architecture proven end to end"><span class="bar-type">SPIKE</span><span class="bar-label">Shipped</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Checkout — all 8 countries</span><span class="id">NEW</span></span><span class="row-meta">Multi-region checkout · target July 17</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions own-joint crosses" style="grid-column: 20 / 28; --own: 50%; --past: 77%;" title="Checkout across all 8 countries: storefront by Anatta, gateways and native checkout by Market America and the platform"><span class="bar-type">IMPL</span><span class="bar-label">Target July 17</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-388" target="_blank" rel="noopener">Payments — Taiwan, Malaysia, Indonesia</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-388" target="_blank" rel="noopener">MA-388</a></span><span class="row-meta">Not started · Cybersource approved · Taiwan first</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions own-client crosses" style="grid-column: 26 / 34; --past: 2%;" title="Cybersource rollout for remaining regions, led by Market America"><span class="bar-type">IMPL</span><span class="bar-label">Cybersource rollout</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-769" target="_blank" rel="noopener">Payment token migration</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-769" target="_blank" rel="noopener">MA-769</a></span><span class="row-meta">Led by platform professional services with Market America</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions own-client crosses" style="grid-column: 24 / 33; --past: 24%;" title="Payment token migration owned by the platform and Market America"><span class="bar-type">IMPL</span><span class="bar-label">Partner-led</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-964" target="_blank" rel="noopener">Subscriptions — Seal integration &amp; portal</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-964" target="_blank" rel="noopener">MA-964</a></span><span class="row-meta">Sandbox validated · integration and portal build</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions own-joint crosses" style="grid-column: 24 / 32; --own: 50%; --past: 27%;" title="Seal subscription integration; storefront and portal by Anatta, configuration by the client"><span class="bar-type">IMPL</span><span class="bar-label">→ mid-August</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Subscription migration execution</span><span class="id">NEW</span></span><span class="row-meta">Awaiting partner migration guide · executes before cutover</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions client-action own-client" style="grid-column: 30 / 35;" title="Subscription data migration executed by the client with Anatta advisory"><span class="bar-type">IMPL</span><span class="bar-label">Client-led</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-398" target="_blank" rel="noopener">Taxes — regional configuration</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-398" target="_blank" rel="noopener">MA-398</a></span><span class="row-meta">Per-region tax setup in progress</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar promotions own-client crosses" style="grid-column: 22 / 34; --past: 34%;" title="Tax configuration per region, client-owned"><span class="bar-type">IMPL</span><span class="bar-label">Per-region setup</span><span class="bar-owner">MARKET AMERICA</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">Data, Migrations &amp; Integrations</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations epic" style="grid-column: 6 / 37;"><span class="bar-type">IMPL</span>Data, migrations &amp; integrations <span class="bar-status">February → mid-September</span></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><span>Consultant attribution edge system</span><span class="id">NEW</span></span><span class="row-meta">Client-operated system · architecture guidance provided</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations own-client crosses" style="grid-column: 6 / 31; --past: 81%;" title="Attribution and consultant lifecycle system operated by Market America; Anatta advises"><span class="bar-type">IMPL</span><span class="bar-label">Client-operated</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>ERP &amp; PIM syncs (inventory, orders, product)</span><span class="id">NEW</span></span><span class="row-meta">Syncs against client systems in progress</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations own-client crosses" style="grid-column: 18 / 31; --past: 63%;" title="Inventory, order and product syncs against client-owned systems"><span class="bar-type">IMPL</span><span class="bar-label">→ early August</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Customer &amp; coupon migration</span><span class="id">NEW</span></span><span class="row-meta">Initial migration complete · re-validation before cutover</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations own-client crosses" style="grid-column: 14 / 32; --past: 67%;" title="Customer and coupon data migration, client-led"><span class="bar-type">IMPL</span><span class="bar-label">Migrated · validating</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Order history migration (3-year window)</span><span class="id">NEW</span></span><span class="row-meta">Initial run complete June · full validation in August</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations crosses" style="grid-column: 22 / 32; --past: 41%;" title="Order history migration into the new platform"><span class="bar-type">IMPL</span><span class="bar-label">Migrated · validating</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>VIFT Wallet → Store Credit</span><span class="id">NEW</span></span><span class="row-meta">Wallet integration · client-led, wallet page interface by Anatta</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations own-client crosses" style="grid-column: 24 / 31; --past: 31%;" title="Wallet balance mapped to store credit"><span class="bar-type">IMPL</span><span class="bar-label">In progress</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Analytics &amp; notifications (email, text)</span><span class="id">NEW</span></span><span class="row-meta">Event tracking and customer notifications · target August 14</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations own-joint crosses" style="grid-column: 22 / 32; --own: 50%; --past: 41%;" title="Analytics events plus email and text notification setup"><span class="bar-type">IMPL</span><span class="bar-label">Target August 14</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Migration validation &amp; parallel run</span><span class="id">NEW</span></span><span class="row-meta">Anatta-led validation ahead of cutover</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar implementations" style="grid-column: 30 / 37;" title="Full data validation and parallel run before cutover"><span class="bar-type">IMPL</span><span class="bar-label">→ mid-September</span><span class="bar-owner">ANATTA</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">Multi-Store, Global &amp; Content</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar compliance epic" style="grid-column: 1 / 36;"><span class="bar-type">IMPL</span>Multi-store &amp; global rollout <span class="bar-status">January → September</span></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-58" target="_blank" rel="noopener">Shopify Plus instances (4) + 24 stores provisioned</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-58" target="_blank" rel="noopener">MA-58</a></span><span class="row-meta">4 instances, 24 stores provisioned · January 23</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar compliance done own-client" style="grid-column: 1 / 5;" title="Platform instances and stores provisioned"><span class="bar-type">IMPL</span><span class="bar-label">Shipped</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-37" target="_blank" rel="noopener">Translations — 9 languages</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-37" target="_blank" rel="noopener">MA-37</a></span><span class="row-meta">Integration live · content localization ongoing</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar compliance own-joint crosses" style="grid-column: 17 / 34; --own: 45%; --past: 54%;" title="Translation integration across 9 languages"><span class="bar-type">IMPL</span><span class="bar-label">→ late August</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-1140" target="_blank" rel="noopener">Store &amp; shipping configuration — 8 regions</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-1140" target="_blank" rel="noopener">MA-1140</a></span><span class="row-meta">Per-region store and shipping setup</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar compliance own-joint crosses" style="grid-column: 26 / 34; --own: 55%; --past: 2%;" title="Per-region store and shipping configuration"><span class="bar-type">IMPL</span><span class="bar-label">→ late August</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Global customer sync &amp; markets</span><span class="id">NEW</span></span><span class="row-meta">Cross-instance customer sync in build</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar compliance own-joint crosses" style="grid-column: 20 / 31; --own: 50%; --past: 56%;" title="Global customer sync and markets setup across instances"><span class="bar-type">IMPL</span><span class="bar-label">→ early August</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-35" target="_blank" rel="noopener">Content entry &amp; product data load</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-35" target="_blank" rel="noopener">MA-35</a></span><span class="row-meta">Scope ownership being finalized</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar compliance client-action own-joint" style="grid-column: 28 / 35; --own: 50%;" title="Content entry and product data load ahead of validation"><span class="bar-type">CONV</span><span class="bar-label">Ownership pending</span><span class="bar-owner">JOINT</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">QA, UAT &amp; Launch <a class="group-id" href="https://anatta-io.atlassian.net/browse/MA-4" target="_blank" rel="noopener">MA-4</a></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments epic" style="grid-column: 22 / 41;"><span class="bar-type">IMPL</span>Quality, acceptance &amp; go-live <span class="bar-status">June → mid-October</span></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><span>Component QA — unit &amp; integration</span><span class="id">NEW</span></span><span class="row-meta">Rolling quality assurance across the component library</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments crosses" style="grid-column: 22 / 30; --past: 52%;" title="Unit and integration QA across roughly 50 components"><span class="bar-type">IMPL</span><span class="bar-label">Rolling QA</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Production environment QA</span><span class="id">NEW</span></span><span class="row-meta">Quality assurance on production storefronts</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments crosses" style="grid-column: 26 / 31; --past: 3%;" title="QA moving onto production store instances"><span class="bar-type">BUG</span><span class="bar-label">Production QA</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>End-to-end &amp; regression testing — all 24 stores</span><span class="id">NEW</span></span><span class="row-meta">After development wrap · all stores</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments" style="grid-column: 30 / 35;" title="Full end-to-end and regression testing across all 24 stores"><span class="bar-type">IMPL</span><span class="bar-label">August</span><span class="bar-owner">ANATTA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-122" target="_blank" rel="noopener">UAT — all 8 countries</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-122" target="_blank" rel="noopener">MA-122</a></span><span class="row-meta">Client acceptance track · sign-off September 11</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments own-joint" style="grid-column: 32 / 36; --own: 45%;" title="User acceptance testing across 8 countries; Anatta support, client sign-off"><span class="bar-type">IMPL</span><span class="bar-label">Aug 17 → Sep 11</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Go / No-Go per instance</span><span class="id">NEW</span></span><span class="row-meta">Launch readiness decision · target September 4</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments own-joint" style="grid-column: 34 / 36; --own: 50%;" title="Per-instance launch readiness decision"><span class="bar-type">CONV</span><span class="bar-label">Target September 4</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-304" target="_blank" rel="noopener">Org-wide platform training</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-304" target="_blank" rel="noopener">MA-304</a></span><span class="row-meta">Client-led enablement with Anatta support</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments own-client" style="grid-column: 34 / 38;" title="Organization-wide platform education and readiness"><span class="bar-type">CONV</span><span class="bar-label">Client-led</span><span class="bar-owner">MARKET AMERICA</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-99" target="_blank" rel="noopener">Global cutover &amp; launch</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-99" target="_blank" rel="noopener">MA-99</a></span><span class="row-meta">Coordinated go-live across all instances</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments own-joint" style="grid-column: 37 / 39; --own: 50%;" title="Global cutover and launch"><span class="bar-type">IMPL</span><span class="bar-label">September 28</span><span class="bar-owner">JOINT</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Post-launch hypercare</span><span class="id">NEW</span></span><span class="row-meta">Stabilization window · length being confirmed</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar experiments" style="grid-column: 39 / 41;" title="Post-launch hypercare and stabilization"><span class="bar-type">IMPL</span><span class="bar-label">Through mid-October</span><span class="bar-owner">ANATTA</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">Proposed — Future (not committed)</div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-84" target="_blank" rel="noopener">Mobile app (iOS / Android)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-84" target="_blank" rel="noopener">MA-84</a></span><span class="row-meta">Estimation stage · timing not committed</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar proposed" style="grid-column: 39 / 41;" title="Native mobile app — estimation stage, not in current scope"><span class="bar-type">SPIKE</span><span class="bar-label">Not scheduled</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>AI shopping assistant</span><span class="id">NEW</span></span><span class="row-meta">Exploration · timing not committed</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar proposed" style="grid-column: 39 / 41;" title="AI shopping assistant — exploratory"><span class="bar-type">SPIKE</span><span class="bar-label">Not scheduled</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>ShopLocal</span><span class="id">NEW</span></span><span class="row-meta">Needs scoping · timing not committed</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar proposed" style="grid-column: 38 / 41;" title="ShopLocal — under discussion, needs scoping"><span class="bar-type">SPIKE</span><span class="bar-label">Not scheduled</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Algolia search (fast-follow)</span><span class="id">NEW</span></span><span class="row-meta">Possible post-launch upgrade</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar proposed" style="grid-column: 39 / 41;" title="Possible post-launch search upgrade"><span class="bar-type">SPIKE</span><span class="bar-label">Not scheduled</span></div></div></div></details><details class="group" open><summary class="row group-row"><div class="row-label">Post-Launch Fast Follows <a class="group-id" href="https://anatta-io.atlassian.net/browse/MA-1023" target="_blank" rel="noopener">MA-1023</a></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div></summary><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-936" target="_blank" rel="noopener">PDP advanced components (~28)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-936" target="_blank" rel="noopener">MA-936</a></span><span class="row-meta">Fast follow · not critical path · unscheduled</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar deferred" style="grid-column: 38 / 41;" title="Advanced product page components, deferred as fast-follow work"><span class="bar-type">IMPL</span><span class="bar-label">Fast follow</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><a href="https://anatta-io.atlassian.net/browse/MA-1023" target="_blank" rel="noopener">Post-MVP backlog (18 items)</a><a class="id" href="https://anatta-io.atlassian.net/browse/MA-1023" target="_blank" rel="noopener">MA-1023</a></span><span class="row-meta">Parked until after launch</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar deferred" style="grid-column: 38 / 41;" title="Post-MVP fast-follow items, explicitly deferred past launch"><span class="bar-type">IMPL</span><span class="bar-label">Post-launch</span></div></div></div><div class="row"><div class="row-label indented"><span class="label-top"><span>Blog, product reviews, wishlist, save-for-later</span><span class="id">NEW</span></span><span class="row-meta">Outside current scope</span></div><div class="row-track"><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell prior"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="bar deferred" style="grid-column: 38 / 41;" title="Candidates for a post-launch phase"><span class="bar-type">IMPL</span><span class="bar-label">Deferred</span></div></div></div></details>
+    </div>
+  </div>
+      <div class="legend-note">One page for the whole engagement — delivered work on the left, in-flight at the today line, and the road to global go-live ahead. Bars show <strong>who owns the work</strong>: solid = Anatta, hatched = Market America, split = joint. A red outline means an item is <strong>blocked awaiting a decision or dependency</strong> — ownership alone is never red. Scroll horizontally to travel the timeline; collapse a lane with its header arrow.</div>
+      <div class="legend">
+        <div class="legend-group">
+          <div class="legend-item"><span class="swatch cart"></span>Storefront</div>
+          <div class="legend-item"><span class="swatch plp"></span>Search &amp; Catalog</div>
+          <div class="legend-item"><span class="swatch promotions"></span>Subscriptions &amp; Payments</div>
+          <div class="legend-item"><span class="swatch implementations"></span>Data &amp; Migrations</div>
+          <div class="legend-item"><span class="swatch compliance"></span>Multi-Store &amp; Global</div>
+          <div class="legend-item"><span class="swatch experiments"></span>QA, UAT &amp; Launch</div>
+        </div>
+        <div class="legend-group">
+          <div class="legend-item"><span class="swatch own-anatta"></span>Anatta-owned</div>
+          <div class="legend-item"><span class="swatch own-client"></span>Market America-owned</div>
+          <div class="legend-item"><span class="swatch own-joint"></span>Joint</div>
+        </div>
+        <div class="legend-group">
+          <div class="legend-item"><span class="swatch done"></span>Shipped</div>
+          <div class="legend-item"><span class="swatch crosses"></span>In progress</div>
+          <div class="legend-item"><span class="swatch proposed"></span>Proposed</div>
+          <div class="legend-item"><span class="swatch deferred"></span>Deferred</div>
+          <div class="legend-item"><span class="swatch client-action"></span>Blocked · awaiting decision</div>
+        </div>
+        <div class="legend-group">
+          <div class="legend-item"><span class="legend-pill">IMPL</span>Build</div>
+          <div class="legend-item"><span class="legend-pill">SPIKE</span>Investigation</div>
+          <div class="legend-item"><span class="legend-pill">CONV</span>Decision</div>
+          <div class="legend-item"><span class="legend-pill">BUG</span>Fix</div>
+        </div>
+        <div class="legend-group">
+          <div class="legend-item"><span class="legend-diamond release"></span>Milestone</div>
+          <div class="legend-item"><span class="legend-diamond projected"></span>Projected</div>
+          <div class="legend-item"><span class="legend-diamond renewal"></span>Go-live</div>
+          <div class="legend-item"><span class="legend-today"></span>Today</div>
+        </div>
+      </div>
+  <footer>Working draft. v0.2 · Market America × Anatta · Generated Jul 7, 2026 · Internal review before client publish.</footer>
+</div>
+<script>
+  (function(){
+    var ganttStart=new Date('2026-01-12T00:00:00'); // Monday of the FIRST column
+    var ganttEnd=new Date('2026-10-19T00:00:00');    // end of the LAST column
+    var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function update(){
+      var today=new Date();
+      var td=document.getElementById('todayDate');
+      if(td) td.textContent=MONTHS[today.getMonth()]+' '+today.getDate();
+      var elapsed=(today-ganttStart)/86400000, span=(ganttEnd-ganttStart)/86400000;
+      var pct=Math.max(0,Math.min(1,elapsed/span));
+      var line=document.getElementById('todayLine'), g=document.querySelector('.gantt');
+      if(line&&g){var lw=parseInt(getComputedStyle(g).getPropertyValue('--label-col'),10)||280;
+        var tw=g.offsetWidth-lw; line.style.left=(lw+tw*pct)+'px'; line.style.display='block';}
+    }
+    function setAll(o){document.querySelectorAll('details.group').forEach(function(d){d.open=o;});}
+    function bind(){
+      var e=document.getElementById('expandAll'),c=document.getElementById('collapseAll');
+      if(e)e.addEventListener('click',function(){setAll(true);});
+      if(c)c.addEventListener('click',function(){setAll(false);});
+      document.querySelectorAll('summary.row a').forEach(function(a){a.addEventListener('click',function(ev){ev.stopPropagation();});});
+      bindResizer();
+    }
+    function bindResizer(){
+      var r=document.getElementById('colResizer'),g=document.querySelector('.gantt');
+      if(!r||!g)return; var MIN=200,MAX=600;
+      var s=parseInt(localStorage.getItem('roadmap-label-col'),10);
+      if(!isNaN(s)&&s>=MIN&&s<=MAX)g.style.setProperty('--label-col',s+'px');
+      r.addEventListener('pointerdown',function(e){e.preventDefault();
+        var sx=e.clientX,sw=parseInt(getComputedStyle(g).getPropertyValue('--label-col'),10)||280;
+        r.classList.add('dragging');try{r.setPointerCapture(e.pointerId);}catch(_){}
+        document.body.style.userSelect='none';document.body.style.cursor='col-resize';
+        function mv(ev){var w=Math.max(MIN,Math.min(MAX,sw+(ev.clientX-sx)));g.style.setProperty('--label-col',w+'px');update();}
+        function up(){r.classList.remove('dragging');document.body.style.userSelect='';document.body.style.cursor='';
+          var f=parseInt(getComputedStyle(g).getPropertyValue('--label-col'),10);if(f)localStorage.setItem('roadmap-label-col',f);
+          window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);}
+        window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);});
+    }
+    function sched(){requestAnimationFrame(update);}
+    function init(){update();bind();sched();
+      var g=document.querySelector('.gantt');
+      if(g&&typeof ResizeObserver!=='undefined'){new ResizeObserver(sched).observe(g);}
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sched);}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+    window.addEventListener('load',sched);window.addEventListener('resize',sched);
+    setInterval(update,60000);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)update();});
+  })();
+</script>
+</body>
+</html>
