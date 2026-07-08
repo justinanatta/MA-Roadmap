@@ -490,6 +490,9 @@
     color: var(--ink);
     font-weight: 700;
     padding: 14px 16px 12px;
+    /* base .row-label centers on the column axis; this row is flex-row, so
+       without this the lane title centers horizontally when no rollup % exists */
+    justify-content: flex-start;
   }
   .group-row .row-track {
     background: var(--ground-elev);
