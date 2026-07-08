@@ -944,7 +944,9 @@
       var pct=Math.max(0,Math.min(1,elapsed/span));
       var line=document.getElementById('todayLine'), g=document.querySelector('.gantt');
       if(line&&g){var lw=parseInt(getComputedStyle(g).getPropertyValue('--label-col'),10)||280;
-        var tw=g.offsetWidth-lw; line.style.left=(lw+tw*pct)+'px'; line.style.display='block';}
+        var tw=g.offsetWidth-lw; var left=lw+tw*pct; line.style.left=left+'px'; line.style.display='block';
+        // hide the line while it sits over the pinned label column (scrolled past today)
+        var wrap=g.parentElement; line.style.visibility=(left-wrap.scrollLeft<lw)?'hidden':'visible';}
     }
     function setAll(o){document.querySelectorAll('details.group').forEach(function(d){d.open=o;});}
     function bind(){
@@ -971,6 +973,8 @@
     }
     function sched(){requestAnimationFrame(update);}
     function init(){update();bind();sched();
+      var w=document.querySelector('.gantt-wrap');
+      if(w)w.addEventListener('scroll',sched,{passive:true});
       var g=document.querySelector('.gantt');
       if(g&&typeof ResizeObserver!=='undefined'){new ResizeObserver(sched).observe(g);}
       if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sched);}
