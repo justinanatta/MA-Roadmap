@@ -116,6 +116,10 @@
 
   .gantt-wrap {
     overflow-x: auto;
+    /* cap at viewport height so the horizontal scrollbar is always reachable;
+       vertical scroll happens inside the wrap, headers stick via .pg-hdr */
+    max-height: 100vh;
+    overflow-y: auto;
     border-top: 1.5px solid var(--rule-strong);
     border-bottom: 1.5px solid var(--rule-strong);
     background: var(--ground);
@@ -876,7 +880,7 @@
 
   .pg-gpct { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--ink-mid); text-transform: none; letter-spacing: 0; }
 
-  .row.pg-hdr { will-change: transform; position: relative; z-index: 40; }
+  .row.pg-hdr { position: sticky; z-index: 40; background: var(--ground); }
   .row.pg-hdr-shadow { box-shadow: 0 3px 8px rgba(0,0,0,0.10); }
 
   .legend-chip { pointer-events: none; flex-shrink: 0; }
@@ -885,7 +889,8 @@
   @media (max-width: 768px) { .pg-chip .pg-ball, .pg-chip .pg-balldot { display: none; } }
   @media print {
     .pg-drawer-in { position: static; width: auto; }
-    .row.pg-hdr { transform: none !important; }
+    .row.pg-hdr { position: static !important; }
+    .gantt-wrap { max-height: none; overflow: visible; }
   }
 </style>
 </head>
@@ -1317,17 +1322,18 @@
   if (gantt && hdrs.length) {
     hdrs.forEach(function (h) { h.classList.add('pg-hdr'); });
     var last = hdrs[hdrs.length - 1];
-    var ganttDocTop = gantt.getBoundingClientRect().top + window.scrollY;
-    var hdrTop = ganttDocTop + hdrs[0].offsetTop;
-    var hh = hdrs.reduce(function (s, h) { return s + h.offsetHeight; }, 0);
-    var onScroll = function () {
-      var ganttBottom = gantt.getBoundingClientRect().bottom + window.scrollY;
-      var off = Math.min(Math.max(0, window.scrollY - hdrTop), Math.max(0, ganttBottom - hdrTop - hh - 120));
-      hdrs.forEach(function (h) { h.style.transform = off > 0 ? 'translateY(' + off + 'px)' : ''; });
-      last.classList.toggle('pg-hdr-shadow', off > 0);
+    var setTops = function () {
+      var off = 0;
+      hdrs.forEach(function (h) { h.style.top = off + 'px'; off += h.getBoundingClientRect().height; });
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    setTops();
+    window.addEventListener('resize', setTops, { passive: true });
+    var hdrTop = hdrs[0].offsetTop;
+    var onWrapScroll = function () {
+      last.classList.toggle('pg-hdr-shadow', wrap.scrollTop > hdrTop);
+    };
+    wrap.addEventListener('scroll', onWrapScroll, { passive: true });
+    onWrapScroll();
   }
 })();
 </script>
