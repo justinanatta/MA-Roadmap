@@ -828,6 +828,61 @@
   .swatch.own-joint { background: var(--cart); background-image: repeating-linear-gradient(45deg,
       rgba(255,255,255,0.35) 0, rgba(255,255,255,0.35) 3px, transparent 3px, transparent 9px); }
   .swatch.client-action { background: var(--ground); box-shadow: inset 0 0 0 1.5px var(--signal); }
+  /* ===== v0.4 PROGRESS & PARITY ===== */
+  .row-label.pg-haschip { flex-direction: row; align-items: center; gap: 12px; }
+  .pg-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+  .pg-chip { height: 20px; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 2px;
+    background: transparent; font-size: 10px; font-weight: 600; color: var(--ink);
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; cursor: pointer;
+    flex-shrink: 0; font-family: var(--font); font-variant-numeric: tabular-nums; }
+  .pg-chip:hover { background: var(--ground-elev); }
+  .pg-chip .pg-car { font-size: 8px; color: var(--ink-mute); }
+  .pg-chip.pg-shipped { color: var(--ink-mute); }
+  .pg-chip .pg-ball.pg-blocked { color: var(--signal); font-weight: 700; }
+
+  .pg-drawer { border-bottom: 1px solid var(--rule); background: var(--ground); }
+  .pg-drawer-in { position: sticky; left: 0; width: calc(100vw - 48px); }
+  .pg-drawer-card { width: min(860px, calc(100% - 48px)); margin: 10px auto 16px; background: #fff;
+    border: 1px solid var(--rule); border-left-width: 3px; border-left-style: solid;
+    border-radius: 2px; padding: 14px 18px; }
+  .pg-dhead { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .pg-dhead .pg-nm { font-size: 12.5px; font-weight: 600; }
+  .pg-dhead .pg-jl { font-size: 10px; color: var(--ink-mute); margin-left: auto; }
+  .pg-dhead .pg-jl a { color: inherit; }
+  .pg-meters { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 14px; }
+  @media (max-width: 700px) { .pg-meters { grid-template-columns: 1fr; } }
+  .pg-m .pg-l { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; margin-bottom: 4px; }
+  .pg-m .pg-v { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .pg-m .pg-t { height: 6px; border-radius: 2px; background: rgba(26,31,26,0.08); position: relative; overflow: hidden; }
+  .pg-m .pg-f { position: absolute; inset: 0 auto 0 0; width: var(--w); border-radius: 2px; }
+  .pg-m .pg-f.pg-hatch { background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.45) 0, rgba(255,255,255,0.45) 3px, transparent 3px, transparent 7px); }
+  .pg-m .pg-f.pg-joint { background: var(--ink) !important; }
+  .pg-m .pg-b { font-size: 9px; color: var(--ink-mute); margin-top: 4px; line-height: 1.4; }
+  .pg-rhead { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); font-weight: 700; margin: 0 0 4px; }
+  .pg-items { width: 100%; border-collapse: collapse; }
+  .pg-items td { padding: 5px 0; border-bottom: 1px solid var(--rule); font-size: 11px; color: var(--ink); vertical-align: baseline; }
+  .pg-items td.pg-tk { width: 82px; font-size: 10px; color: var(--ink-mute); }
+  .pg-items td.pg-tk a { color: inherit; }
+  .pg-items td.pg-ow { width: 118px; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mid); font-weight: 600; }
+  .pg-items td.pg-st { width: 148px; font-size: 10px; color: var(--ink-mid); }
+  .pg-items td.pg-st.pg-blocked { color: var(--signal); font-weight: 600; }
+  .pg-items tr:last-child td { border-bottom: none; }
+  .pg-dfoot { font-size: 9.5px; font-style: italic; color: var(--ink-mute); margin-top: 10px; }
+
+  .pg-barpct { position: absolute; top: 50%; transform: translateY(-50%); font-size: 10.5px;
+    font-weight: 700; white-space: nowrap; background: rgba(0,0,0,0.30); padding: 2px 6px; border-radius: 2px; color: white; }
+  .bar.pg-scoped .bar-owner { display: none; }
+
+  .pg-gpct { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--ink-mid); text-transform: none; letter-spacing: 0; }
+
+  .row.pg-hdr { will-change: transform; position: relative; z-index: 40; }
+  .row.pg-hdr-shadow { box-shadow: 0 3px 8px rgba(0,0,0,0.10); }
+
+  @media (max-width: 768px) { .pg-chip .pg-ball, .pg-chip .pg-balldot { display: none; } }
+  @media print {
+    .pg-drawer-in { position: static; width: auto; }
+    .row.pg-hdr { transform: none !important; }
+  }
 </style>
 </head>
 <body>
